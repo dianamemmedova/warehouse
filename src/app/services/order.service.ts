@@ -8,17 +8,24 @@ import { MOCK_ORDERS } from '../data/mock-orders';
 export class OrderService {
   private orders = signal<Order[]>([...MOCK_ORDERS]);
 
-  getOrders(filter?: OrderFilter, page: number = 0, pageSize: number = 10): Observable<{ data: Order[]; total: number }> {
+ getOrders(filter?: OrderFilter, page: number = 0, pageSize: number = 10): Observable<{ data: Order[]; total: number }> {
     let result = this.orders();
 
     if (filter) {
-      result = result.filter(order => {
-        const matchesOrderNo = !filter.orderNo || order.orderNo.toLowerCase().includes(filter.orderNo.toLowerCase());
-        const matchesCompany = !filter.companyName || order.companyName.toLowerCase().includes(filter.companyName.toLowerCase());
-        const matchesStatus = !filter.statusId || order.statusId === filter.statusId;
-        const matchesType = !filter.orderType || order.orderType === filter.orderType;
-        return matchesOrderNo && matchesCompany && matchesStatus && matchesType;
-      });
+      const contains = (value: string | undefined, target: string) => {
+        if (!value) return true;
+        return target.toLocaleLowerCase('az').includes(value.toLocaleLowerCase('az'));
+      };
+
+      result = result.filter(order =>
+        contains(filter.orderNo, order.orderNo) &&
+        contains(filter.date, order.date) &&
+        contains(filter.companyName, order.companyName) &&
+        contains(filter.orderType, order.orderType) &&
+        contains(filter.paymentType, order.paymentType) &&
+        contains(filter.createDate, order.createDate) &&
+        contains(filter.statusValue, order.statusValue)
+      );
     }
 
     const total = result.length;
@@ -26,6 +33,11 @@ export class OrderService {
     const pageData = result.slice(start, start + pageSize);
 
     return of({ data: pageData, total }).pipe(delay(400));
+  }
+
+  getOrderById(id: number): Observable<Order | undefined> {
+    const found = this.orders().find(o => o.id === id);
+    return of(found).pipe(delay(200));
   }
 
   addOrder(order: Order): Observable<Order> {

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, signal, computed } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +14,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { OrderService } from '../../services/order.service';
 import { Order, OrderStatus, OrderFilter } from '../../models/order.model';
-import { OrderDialog, OrderDialogData } from '../order-dialog/order-dialog';
+
 import { ConfirmDialog, ConfirmDialogData } from '../confirm-dialog/confirm-dialog';
 
 @Component({
@@ -41,7 +42,8 @@ export class OrderList implements OnInit {
     private orderService: OrderService,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   displayedColumns: string[] = [
@@ -108,12 +110,16 @@ export class OrderList implements OnInit {
     this.loadPage(event.pageIndex, event.pageSize);
   }
 
-  applyFilter() {
+ applyFilter() {
     const raw = this.filterForm.value;
     const filter: OrderFilter = {
       orderNo: raw.orderNo || undefined,
+      date: raw.date || undefined,
       companyName: raw.companyName || undefined,
-      orderType: raw.orderType || undefined
+      orderType: raw.orderType || undefined,
+      paymentType: raw.paymentType || undefined,
+      createDate: raw.createDate || undefined,
+      statusValue: raw.statusValue || undefined
     };
 
     this.isLoading.set(true);
@@ -128,48 +134,17 @@ export class OrderList implements OnInit {
   }
 
 
-  openCreateDialog() {
-    const dialogRef = this.dialog.open(OrderDialog, {
-      width: '700px',
-      maxWidth: '95vw',
-      data: { mode: 'create' } as OrderDialogData
-    });
 
-    dialogRef.afterClosed().subscribe((result: Order | undefined) => {
-      if (result) {
-        this.orderService.addOrder(result).subscribe(() => {
-          this.snackBar.open('Sifariş uğurla əlavə edildi', 'Bağla', { duration: 3000 });
-          this.loadStats();
-          this.loadPage(0, this.pageSize);
-        });
-      }
-    });
+  openCreateDialog() {
+    this.router.navigate(['/order-form'], { queryParams: { mode: 'create' } });
   }
 
   onView(order: Order) {
-    this.dialog.open(OrderDialog, {
-      width: '700px',
-      maxWidth: '95vw',
-      data: { mode: 'view', order } as OrderDialogData
-    });
+    this.router.navigate(['/order-form'], { queryParams: { mode: 'view', orderId: order.id } });
   }
 
   onEdit(order: Order) {
-    const dialogRef = this.dialog.open(OrderDialog, {
-      width: '700px',
-      maxWidth: '95vw',
-      data: { mode: 'edit', order } as OrderDialogData
-    });
-
-    dialogRef.afterClosed().subscribe((result: Order | undefined) => {
-      if (result) {
-        this.orderService.updateOrder(result).subscribe(() => {
-          this.snackBar.open('Sifariş yeniləndi', 'Bağla', { duration: 3000 });
-          this.loadStats();
-          this.loadPage(this.paginator?.pageIndex || 0, this.pageSize);
-        });
-      }
-    });
+    this.router.navigate(['/order-form'], { queryParams: { mode: 'edit', orderId: order.id } });
   }
 
   onDelete(order: Order) {

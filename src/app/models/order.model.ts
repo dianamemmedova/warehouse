@@ -30,9 +30,10 @@ export interface Order {
 
 export interface OrderFilter {
   orderNo?: string;
+  date?: string;
   companyName?: string;
-  statusId?: OrderStatus | null;
   orderType?: string;
-  dateFrom?: string;
-  dateTo?: string;
+  paymentType?: string;
+  createDate?: string;
+  statusValue?: string;
 }
