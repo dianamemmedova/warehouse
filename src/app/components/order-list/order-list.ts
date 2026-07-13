@@ -14,7 +14,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { OrderService } from '../../services/order.service';
 import { Order, OrderStatus, OrderFilter } from '../../models/order.model';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { ConfirmDialog, ConfirmDialogData } from '../confirm-dialog/confirm-dialog';
 
 @Component({
@@ -22,6 +23,8 @@ import { ConfirmDialog, ConfirmDialogData } from '../confirm-dialog/confirm-dial
   standalone: true,
   imports: [
     ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,

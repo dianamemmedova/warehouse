@@ -79,56 +79,70 @@
 
         <ng-container matColumnDef="orderNo">
           <th mat-header-cell *matHeaderCellDef>
-            <input class="header-input" formControlName="orderNo" placeholder="Sifariş №"
-              (keyup.enter)="applyFilter()">
+            <mat-form-field appearance="outline" class="header-field">
+              <mat-label>Sifariş №</mat-label>
+              <input matInput formControlName="orderNo" (keyup.enter)="applyFilter()">
+            </mat-form-field>
           </th>
           <td mat-cell *matCellDef="let row">{{ row.orderNo }}</td>
         </ng-container>
 
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef>
-            <input class="header-input" formControlName="date" placeholder="Tarix"
-              (keyup.enter)="applyFilter()">
+            <mat-form-field appearance="outline" class="header-field">
+              <mat-label>Tarix</mat-label>
+              <input matInput formControlName="date" (keyup.enter)="applyFilter()">
+            </mat-form-field>
           </th>
           <td mat-cell *matCellDef="let row">{{ row.date }}</td>
         </ng-container>
 
         <ng-container matColumnDef="companyName">
           <th mat-header-cell *matHeaderCellDef>
-            <input class="header-input" formControlName="companyName" placeholder="Müştəri"
-              (keyup.enter)="applyFilter()">
+            <mat-form-field appearance="outline" class="header-field">
+              <mat-label>Müştəri</mat-label>
+              <input matInput formControlName="companyName" (keyup.enter)="applyFilter()">
+            </mat-form-field>
           </th>
           <td mat-cell *matCellDef="let row">{{ row.companyName }}</td>
         </ng-container>
 
         <ng-container matColumnDef="orderType">
           <th mat-header-cell *matHeaderCellDef>
-            <input class="header-input" formControlName="orderType" placeholder="Tipi"
-              (keyup.enter)="applyFilter()">
+            <mat-form-field appearance="outline" class="header-field">
+              <mat-label>Tipi</mat-label>
+              <input matInput formControlName="orderType" (keyup.enter)="applyFilter()">
+            </mat-form-field>
           </th>
           <td mat-cell *matCellDef="let row">{{ row.orderType }}</td>
         </ng-container>
 
         <ng-container matColumnDef="paymentType">
           <th mat-header-cell *matHeaderCellDef>
-            <input class="header-input" formControlName="paymentType" placeholder="Ödəniş Növü"
-              (keyup.enter)="applyFilter()">
+            <mat-form-field appearance="outline" class="header-field">
+              <mat-label>Ödəniş Növü</mat-label>
+              <input matInput formControlName="paymentType" (keyup.enter)="applyFilter()">
+            </mat-form-field>
           </th>
           <td mat-cell *matCellDef="let row">{{ row.paymentType }}</td>
         </ng-container>
 
         <ng-container matColumnDef="createDate">
           <th mat-header-cell *matHeaderCellDef>
-            <input class="header-input" formControlName="createDate" placeholder="Yaradılma tarixi"
-              (keyup.enter)="applyFilter()">
+            <mat-form-field appearance="outline" class="header-field">
+              <mat-label>Yaradılma tarixi</mat-label>
+              <input matInput formControlName="createDate" (keyup.enter)="applyFilter()">
+            </mat-form-field>
           </th>
           <td mat-cell *matCellDef="let row">{{ row.createDate }}</td>
         </ng-container>
 
         <ng-container matColumnDef="statusValue">
           <th mat-header-cell *matHeaderCellDef>
-            <input class="header-input" formControlName="statusValue" placeholder="Status"
-              (keyup.enter)="applyFilter()">
+            <mat-form-field appearance="outline" class="header-field">
+              <mat-label>Status</mat-label>
+              <input matInput formControlName="statusValue" (keyup.enter)="applyFilter()">
+            </mat-form-field>
           </th>
           <td mat-cell *matCellDef="let row">
             <mat-chip  [style.color]="'#fff'">
