@@ -1,0 +1,124 @@
+<div class="stats-row">
+  <mat-card class="stat-card">
+    <mat-icon>list_alt</mat-icon>
+    <div class="stat-info">
+      <span class="stat-value">{{ statCount() }}</span>
+      <span class="stat-label">Ümumi sifariş</span>
+    </div>
+  </mat-card>
+
+  <mat-card class="stat-card active">
+    <mat-icon>autorenew</mat-icon>
+    <div class="stat-info">
+      <span class="stat-value">{{ activeCount() }}</span>
+      <span class="stat-label">Aktiv</span>
+    </div>
+  </mat-card>
+
+  <mat-card class="stat-card completed">
+    <mat-icon>check_circle</mat-icon>
+    <div class="stat-info">
+      <span class="stat-value">{{ completedCount() }}</span>
+      <span class="stat-label">Tamamlanıb</span>
+    </div>
+  </mat-card>
+
+  <mat-card class="stat-card cancelled">
+    <mat-icon>cancel</mat-icon>
+    <div class="stat-info">
+      <span class="stat-value">{{ cancelledCount() }}</span>
+      <span class="stat-label">Ləğv edilib</span>
+    </div>
+  </mat-card>
+</div>
+
+<div class="table-container mat-elevation-z2">
+
+  @if (isLoading()) {
+    <div class="loading-overlay">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  <table mat-table [dataSource]="dataSource" matSort class="orders-table">
+
+    <ng-container matColumnDef="orderNo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Sifariş №</th>
+      <td mat-cell *matCellDef="let row">{{ row.orderNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="companyName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Müştəri</th>
+      <td mat-cell *matCellDef="let row">{{ row.companyName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="orderType">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipi</th>
+      <td mat-cell *matCellDef="let row">{{ row.orderType }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="cargoWeight">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Çəki (kg)</th>
+      <td mat-cell *matCellDef="let row" class="number-cell">{{ row.cargoWeight | number }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="truckplate">
+      <th mat-header-cell *matHeaderCellDef>Maşın №</th>
+      <td mat-cell *matCellDef="let row">{{ row.truckplate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="warehouseName">
+      <th mat-header-cell *matHeaderCellDef>Anbar</th>
+      <td mat-cell *matCellDef="let row">{{ row.warehouseName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="statusValue">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let row">
+        <mat-chip [style.background-color]="getStatusColor(row.statusId)" [style.color]="'#fff'">
+          {{ row.statusValue }}
+        </mat-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onView(row)">
+            <mat-icon>visibility</mat-icon>
+            <span>Bax</span>
+          </button>
+          <button mat-menu-item (click)="onEdit(row)">
+            <mat-icon>edit</mat-icon>
+            <span>Redaktə et</span>
+          </button>
+          <button mat-menu-item (click)="onDelete(row)">
+            <mat-icon>delete</mat-icon>
+            <span>Sil</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+        Uyğun sifariş tapılmadı
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator
+    [length]="totalCount()"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"
+    showFirstLastButtons>
+  </mat-paginator>
+</div>

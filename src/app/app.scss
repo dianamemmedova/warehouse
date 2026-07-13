@@ -1,0 +1,15 @@
+.app-toolbar {
+  display: flex;
+  gap: 12px;
+
+  .toolbar-title {
+    font-weight: 500;
+    font-size: 18px;
+  }
+}
+
+.app-content {
+  padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
