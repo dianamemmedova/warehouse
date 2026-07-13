@@ -1,8 +1,6 @@
-<h2 mat-dialog-title>
-  {{ isEditMode ? 'Sifarişi redaktə et' : 'Yeni sifariş' }}
-</h2>
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
 
-<mat-dialog-content >
+<mat-dialog-content>
   <form [formGroup]="form" class="dialog-form">
 
     <mat-form-field appearance="outline">
@@ -87,8 +85,12 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-stroked-button (click)="cancel()">Ləğv et</button>
-  <button mat-flat-button color="primary" (click)="save()">
-    <mat-icon>save</mat-icon> Yadda saxla
-  </button>
+  @if (isViewMode) {
+    <button mat-flat-button color="primary" (click)="cancel()">Bağla</button>
+  } @else {
+    <button mat-stroked-button (click)="cancel()">Ləğv et</button>
+    <button mat-flat-button color="primary" (click)="save()">
+      <mat-icon>save</mat-icon> Yadda saxla
+    </button>
+  }
 </mat-dialog-actions>

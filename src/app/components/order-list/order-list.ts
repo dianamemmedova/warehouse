@@ -134,7 +134,11 @@ export class OrderList implements OnInit {
   }
 
   onView(order: Order) {
-    console.log('Bax:', order);
+    this.dialog.open(OrderDialog, {
+      width: '700px',
+      maxWidth: '95vw',
+      data: { mode: 'view', order } as OrderDialogData
+    });
   }
 
   openCreateDialog() {

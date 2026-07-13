@@ -10,7 +10,7 @@ import { Order, OrderStatus } from '../../models/order.model';
 import { ORDER_TYPES, PAYMENT_TYPES, STATUS_LABELS } from '../../constants/status.constants';
 
 export interface OrderDialogData {
-  mode: 'create' | 'edit';
+  mode: 'create' | 'edit' | 'view';
   order?: Order;
 }
 
@@ -59,10 +59,24 @@ export class OrderDialog {
       typeOfVehicle: [order?.typeOfVehicle || ''],
       warehouseDoorName: [order?.warehouseDoorName || '']
     });
+
+    if (this.isViewMode) {
+      this.form.disable();
+    }
   }
 
   get isEditMode(): boolean {
     return this.data.mode === 'edit';
+  }
+
+  get isViewMode(): boolean {
+    return this.data.mode === 'view';
+  }
+
+  get dialogTitle(): string {
+    if (this.data.mode === 'view') return 'Sifariş məlumatı';
+    if (this.data.mode === 'edit') return 'Sifarişi redaktə et';
+    return 'Yeni sifariş';
   }
 
   save() {
