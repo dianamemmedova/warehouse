@@ -20,7 +20,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { OrderFilter } from '../../models/order.model';
 import { ORDER_TYPES } from '../../constants/status.constants';
-
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { OrderDialog, OrderDialogData } from '../order-dialog/order-dialog';
 
 @Component({
   selector: 'app-order-list',
@@ -41,7 +43,9 @@ import { ORDER_TYPES } from '../../constants/status.constants';
   MatChipsModule,
   MatMenuModule,
   MatButtonModule,
-  MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule,
+   MatSnackBarModule
   ],
   templateUrl: './order-list.html',
   styleUrl: './order-list.scss'
@@ -49,8 +53,10 @@ import { ORDER_TYPES } from '../../constants/status.constants';
 export class OrderList implements OnInit {
   constructor(
     private orderService: OrderService,
-    private fb: FormBuilder
-  ) { }
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
   filterForm!: FormGroup;
   orderTypes = ORDER_TYPES;
   statusOptions = [
@@ -131,8 +137,50 @@ export class OrderList implements OnInit {
     console.log('Bax:', order);
   }
 
+  openCreateDialog() {
+    const dialogRef = this.dialog.open(OrderDialog, {
+      width: '700px',
+      maxWidth: '95vw',
+      data: { mode: 'create' } as OrderDialogData
+    });
+
+    dialogRef.afterClosed().subscribe((result: Order | undefined) => {
+      if (result) {
+        this.orderService.addOrder(result).subscribe(() => {
+          this.snackBar.open('Sifariş uğurla əlavə edildi', 'Bağla', { duration: 3000 });
+          this.loadStats();
+          this.loadPage(0, this.pageSize);
+        });
+      }
+    });
+  }
+
   onEdit(order: Order) {
-    console.log('Redaktə et:', order);
+    const dialogRef = this.dialog.open(OrderDialog, {
+      width: '700px',
+      maxWidth: '95vw',
+      data: { mode: 'edit', order } as OrderDialogData
+    });
+
+    dialogRef.afterClosed().subscribe((result: Order | undefined) => {
+      if (result) {
+        this.orderService.updateOrder(result).subscribe(() => {
+          this.snackBar.open('Sifariş yeniləndi', 'Bağla', { duration: 3000 });
+          this.loadStats();
+          this.loadPage(this.paginator?.pageIndex || 0, this.pageSize);
+        });
+      }
+    });
+  }
+
+  onDelete(order: Order) {
+    if (confirm(`${order.orderNo} sifarişini silmək istədiyinizə əminsiniz?`)) {
+      this.orderService.deleteOrder(order.id).subscribe(() => {
+        this.snackBar.open('Sifariş silindi', 'Bağla', { duration: 3000 });
+        this.loadStats();
+        this.loadPage(0, this.pageSize);
+      });
+    }
   }
   applyFilter() {
     const raw = this.filterForm.value;
@@ -159,7 +207,5 @@ export class OrderList implements OnInit {
     this.loadPage(0, this.pageSize);
   }
 
-  onDelete(order: Order) {
-    console.log('Sil:', order);
-  }
+  
 }
