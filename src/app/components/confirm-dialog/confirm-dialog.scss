@@ -1,0 +1,18 @@
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &.danger {
+    color: #e53935;
+
+    mat-icon {
+      color: #e53935;
+    }
+  }
+}
+
+mat-dialog-content p {
+  margin: 0;
+  color: #424242;
+}

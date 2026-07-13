@@ -23,6 +23,7 @@ import { ORDER_TYPES } from '../../constants/status.constants';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { OrderDialog, OrderDialogData } from '../order-dialog/order-dialog';
+import { ConfirmDialog, ConfirmDialogData } from '../confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-order-list',
@@ -178,13 +179,26 @@ export class OrderList implements OnInit {
   }
 
   onDelete(order: Order) {
-    if (confirm(`${order.orderNo} sifarişini silmək istədiyinizə əminsiniz?`)) {
-      this.orderService.deleteOrder(order.id).subscribe(() => {
-        this.snackBar.open('Sifariş silindi', 'Bağla', { duration: 3000 });
-        this.loadStats();
-        this.loadPage(0, this.pageSize);
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '420px',
+      data: {
+        title: 'Sifarişi sil',
+        message: `"${order.orderNo}" nömrəli sifarişi silmək istədiyinizə əminsiniz? Bu əməliyyat geri qaytarıla bilməz.`,
+        confirmText: 'Sil',
+        cancelText: 'Ləğv et',
+        isDanger: true
+      } as ConfirmDialogData
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.orderService.deleteOrder(order.id).subscribe(() => {
+          this.snackBar.open('Sifariş silindi', 'Bağla', { duration: 3000 });
+          this.loadStats();
+          this.loadPage(0, this.pageSize);
+        });
+      }
+    });
   }
   applyFilter() {
     const raw = this.filterForm.value;
