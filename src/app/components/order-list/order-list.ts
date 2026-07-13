@@ -12,28 +12,55 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OrderService } from '../../services/order.service';
 import { Order, OrderStatus } from '../../models/order.model';
 import { STATUS_COLORS } from '../../constants/status.constants';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { OrderFilter } from '../../models/order.model';
+import { ORDER_TYPES } from '../../constants/status.constants';
 
 
 @Component({
   selector: 'app-order-list',
   standalone: true,
   imports: [
-    DecimalPipe,
-    MatCardModule,
-    MatIconModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatChipsModule,
-    MatMenuModule,
-    MatButtonModule,
-    MatProgressSpinnerModule
+  DecimalPipe,
+  ReactiveFormsModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatCardModule,
+  MatIconModule,
+  MatTableModule,
+  MatSortModule,
+  MatPaginatorModule,
+  MatChipsModule,
+  MatMenuModule,
+  MatButtonModule,
+  MatProgressSpinnerModule
   ],
   templateUrl: './order-list.html',
   styleUrl: './order-list.scss'
 })
 export class OrderList implements OnInit {
-  constructor(private orderService: OrderService) {}
+  constructor(
+    private orderService: OrderService,
+    private fb: FormBuilder
+  ) { }
+  filterForm!: FormGroup;
+  orderTypes = ORDER_TYPES;
+  statusOptions = [
+    { value: OrderStatus.Draft, label: 'Qaralama' },
+    { value: OrderStatus.Active, label: 'Aktiv' },
+    { value: OrderStatus.Confirmed, label: 'Təsdiqlənib' },
+    { value: OrderStatus.Completed, label: 'Tamamlanıb' },
+    { value: OrderStatus.Cancelled, label: 'Ləğv edilib' },
+    { value: OrderStatus.Rejected, label: 'Rədd edilib' }
+  ];
 
   displayedColumns: string[] = [
     'orderNo',
@@ -62,10 +89,21 @@ export class OrderList implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit() {
+    this.buildFilterForm();
     this.loadStats();
     this.loadPage(0, this.pageSize);
   }
 
+  buildFilterForm() {
+    this.filterForm = this.fb.group({
+      orderNo: [''],
+      companyName: [''],
+      statusId: [null],
+      orderType: [''],
+      dateFrom: [null],
+      dateTo: [null]
+    });
+  }
   loadStats() {
     this.orderService.getOrders(undefined, 0, 9999).subscribe(res => {
       this.allOrders.set(res.data);
@@ -95,6 +133,30 @@ export class OrderList implements OnInit {
 
   onEdit(order: Order) {
     console.log('Redaktə et:', order);
+  }
+  applyFilter() {
+    const raw = this.filterForm.value;
+    const filter: OrderFilter = {
+      orderNo: raw.orderNo || undefined,
+      companyName: raw.companyName || undefined,
+      statusId: raw.statusId || undefined,
+      orderType: raw.orderType || undefined
+    };
+
+    this.isLoading.set(true);
+    this.orderService.getOrders(filter, 0, this.pageSize).subscribe(res => {
+      this.dataSource.data = res.data;
+      this.totalCount.set(res.total);
+      this.isLoading.set(false);
+      if (this.paginator) {
+        this.paginator.firstPage();
+      }
+    });
+  }
+
+  resetFilter() {
+    this.filterForm.reset();
+    this.loadPage(0, this.pageSize);
   }
 
   onDelete(order: Order) {

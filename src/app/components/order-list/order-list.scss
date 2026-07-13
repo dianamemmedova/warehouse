@@ -69,3 +69,25 @@
   padding: 24px;
   color: #757575;
 }
+
+.filter-card {
+  margin-bottom: 24px;
+  padding: 16px 20px;
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.filter-field {
+  width: 200px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}

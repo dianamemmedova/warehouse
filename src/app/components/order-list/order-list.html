@@ -32,6 +32,65 @@
   </mat-card>
 </div>
 
+<mat-card class="filter-card">
+  <form [formGroup]="filterForm" (ngSubmit)="applyFilter()" class="filter-form">
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Sifariş №</mat-label>
+      <input matInput formControlName="orderNo" autocomplete="off">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Müştəri</mat-label>
+      <input matInput formControlName="companyName" autocomplete="off">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="statusId">
+        <mat-option [value]="null">Hamısı</mat-option>
+        @for (status of statusOptions; track status.value) {
+          <mat-option [value]="status.value">{{ status.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Sifariş tipi</mat-label>
+      <mat-select formControlName="orderType">
+        <mat-option value="">Hamısı</mat-option>
+        @for (type of orderTypes; track type) {
+          <mat-option [value]="type">{{ type }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Tarixdən</mat-label>
+      <input matInput [matDatepicker]="pickerFrom" formControlName="dateFrom">
+      <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFrom></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Tarixədək</mat-label>
+      <input matInput [matDatepicker]="pickerTo" formControlName="dateTo">
+      <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+      <mat-datepicker #pickerTo></mat-datepicker>
+    </mat-form-field>
+
+    <div class="filter-actions">
+      <button mat-flat-button color="primary" type="submit">
+        <mat-icon>search</mat-icon> Axtar
+      </button>
+      <button mat-stroked-button type="button" (click)="resetFilter()">
+        <mat-icon>refresh</mat-icon> Sıfırla
+      </button>
+    </div>
+
+  </form>
+</mat-card>
+
 <div class="table-container mat-elevation-z2">
 
   @if (isLoading()) {
