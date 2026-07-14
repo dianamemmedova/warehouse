@@ -11,7 +11,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { OrderService } from '../../services/order.service';
 import { Order, OrderStatus } from '../../models/order.model';
 import { ORDER_TYPES, PAYMENT_TYPES, STATUS_LABELS } from '../../constants/status.constants';
-
+import { MatDividerModule } from '@angular/material/divider';
 type FormMode = 'create' | 'edit' | 'view';
 
 @Component({
@@ -25,7 +25,8 @@ type FormMode = 'create' | 'edit' | 'view';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDividerModule
   ],
   templateUrl: './order-form.html',
   styleUrl: './order-form.scss'

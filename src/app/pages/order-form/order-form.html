@@ -1,6 +1,6 @@
 <div class="form-page">
   <div class="form-page-header">
-    <button mat-icon-button (click)="goBack()">
+    <button mat-icon-button type="button" (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h1>{{ pageTitle() }}</h1>
@@ -8,96 +8,130 @@
 
   <div class="form-page-body">
     <mat-card class="form-main-card">
-      <form [formGroup]="form" class="order-form-grid">
+      <form [formGroup]="form">
 
-        <mat-form-field appearance="outline">
-          <mat-label>Sifariş №</mat-label>
-          <input matInput formControlName="orderNo">
-          @if (form.get('orderNo')?.hasError('required') && form.get('orderNo')?.touched) {
-            <mat-error>Sifariş nömrəsi mütləqdir</mat-error>
-          }
-        </mat-form-field>
+        <section class="form-section">
+          <h3 class="section-title">Sifariş məlumatları</h3>
+          <div class="section-grid">
 
-        <mat-form-field appearance="outline">
-          <mat-label>Müştəri</mat-label>
-          <input matInput formControlName="companyName">
-          @if (form.get('companyName')?.hasError('required') && form.get('companyName')?.touched) {
-            <mat-error>Müştəri adı mütləqdir</mat-error>
-          }
-        </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Sifariş №</mat-label>
+              <input matInput formControlName="orderNo">
+              @if (form.get('orderNo')?.hasError('required') && form.get('orderNo')?.touched) {
+                <mat-error>Sifariş nömrəsi mütləqdir</mat-error>
+              }
+            </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Sifariş tipi</mat-label>
-          <mat-select formControlName="orderType">
-            @for (type of orderTypes; track type) {
-              <mat-option [value]="type">{{ type }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Sifariş tipi</mat-label>
+              <mat-select formControlName="orderType">
+                @for (type of orderTypes; track type) {
+                  <mat-option [value]="type">{{ type }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Ödəniş növü</mat-label>
-          <mat-select formControlName="paymentType">
-            @for (type of paymentTypes; track type) {
-              <mat-option [value]="type">{{ type }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Ödəniş növü</mat-label>
+              <mat-select formControlName="paymentType">
+                @for (type of paymentTypes; track type) {
+                  <mat-option [value]="type">{{ type }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Status</mat-label>
-          <mat-select formControlName="statusId">
-            @for (status of statusOptions; track status.value) {
-              <mat-option [value]="status.value">{{ status.label }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="statusId">
+                @for (status of statusOptions; track status.value) {
+                  <mat-option [value]="status.value">{{ status.label }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Yük adı</mat-label>
-          <input matInput formControlName="cargoName">
-        </mat-form-field>
+          </div>
+        </section>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Çəki (kg)</mat-label>
-          <input matInput type="number" formControlName="cargoWeight">
-        </mat-form-field>
+        <mat-divider></mat-divider>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Məbləğ</mat-label>
-          <input matInput type="number" formControlName="finalAmount">
-        </mat-form-field>
+        <section class="form-section">
+          <h3 class="section-title">Müştəri məlumatları</h3>
+          <div class="section-grid">
 
-        <mat-form-field appearance="outline">
-          <mat-label>Maşın №</mat-label>
-          <input matInput formControlName="truckplate">
-        </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Müştəri</mat-label>
+              <input matInput formControlName="companyName">
+              @if (form.get('companyName')?.hasError('required') && form.get('companyName')?.touched) {
+                <mat-error>Müştəri adı mütləqdir</mat-error>
+              }
+            </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Anbar binası</mat-label>
-          <input matInput formControlName="warehouseName">
-        </mat-form-field>
+          </div>
+        </section>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Maşın tipi</mat-label>
-          <input matInput formControlName="typeOfVehicle">
-        </mat-form-field>
+        <mat-divider></mat-divider>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Anbar qapısı</mat-label>
-          <input matInput formControlName="warehouseDoorName">
-        </mat-form-field>
+        <section class="form-section">
+          <h3 class="section-title">Yük məlumatları</h3>
+          <div class="section-grid">
+
+            <mat-form-field appearance="outline">
+              <mat-label>Yük adı</mat-label>
+              <input matInput formControlName="cargoName">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Çəki (kg)</mat-label>
+              <input matInput type="number" formControlName="cargoWeight">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Məbləğ</mat-label>
+              <input matInput type="number" formControlName="finalAmount">
+            </mat-form-field>
+
+          </div>
+        </section>
+
+        <mat-divider></mat-divider>
+
+        <section class="form-section">
+          <h3 class="section-title">Nəqliyyat məlumatları</h3>
+          <div class="section-grid">
+
+            <mat-form-field appearance="outline">
+              <mat-label>Maşın №</mat-label>
+              <input matInput formControlName="truckplate">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Maşın tipi</mat-label>
+              <input matInput formControlName="typeOfVehicle">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Anbar binası</mat-label>
+              <input matInput formControlName="warehouseName">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Anbar qapısı</mat-label>
+              <input matInput formControlName="warehouseDoorName">
+            </mat-form-field>
+
+          </div>
+        </section>
 
       </form>
     </mat-card>
 
     <div class="form-side-panel">
       @if (!isViewMode()) {
-        <button mat-flat-button color="primary" class="side-btn" (click)="save()">
+        <button mat-flat-button color="primary" type="button" class="side-btn" (click)="save()">
           <mat-icon>save</mat-icon> Yadda saxla
         </button>
       }
-      <button mat-stroked-button class="side-btn" (click)="goBack()">
+      <button mat-stroked-button type="button" class="side-btn" (click)="goBack()">
         <mat-icon>arrow_back</mat-icon> Geri
       </button>
     </div>

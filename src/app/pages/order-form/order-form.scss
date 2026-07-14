@@ -28,13 +28,34 @@
 .form-main-card {
   flex: 1;
   border-radius: 12px;
-  padding: 24px;
+  padding: 24px 28px;
 }
 
-.order-form-grid {
+.form-section {
+  padding: 20px 0;
+
+  &:first-of-type {
+    padding-top: 4px;
+  }
+}
+
+.section-title {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: $accent-green-dark;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.section-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 20px;
+  gap: 4px 20px;
+}
+
+mat-divider {
+  margin: 4px 0;
 }
 
 .form-side-panel {
@@ -53,7 +74,7 @@
 }
 
 @media (max-width: 800px) {
-  .order-form-grid {
+  .section-grid {
     grid-template-columns: 1fr;
   }
 
