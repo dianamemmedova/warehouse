@@ -72,6 +72,31 @@ mat-divider {
     height: 44px;
   }
 }
+.section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 20px;
+  width: 100%;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.form-main-card {
+  flex: 1;
+  width: 100%;
+  border-radius: 12px;
+  padding: 24px 28px;
+  box-sizing: border-box;
+}
+
+.form-page-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+}
 
 @media (max-width: 800px) {
   .section-grid {
@@ -86,5 +111,19 @@ mat-divider {
     width: 100%;
     position: static;
     flex-direction: row;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-page {
+    padding: 12px;
+  }
+
+  .form-main-card {
+    padding: 16px;
+  }
+
+  .form-side-panel {
+    flex-direction: column;
   }
 }
